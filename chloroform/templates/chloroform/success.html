@@ -3,5 +3,5 @@
 {% load i18n crispy_forms_tags %}
 
 {% block contact_form_content %}
-{{configuration.success_message}}
+{{configuration.success_message|safe}}
 {% endblock contact_form_content %}

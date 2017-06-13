@@ -1,14 +1,8 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-06-13 05:51-0500\n"
+"POT-Creation-Date: 2017-06-13 08:34-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,101 +11,106 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-#: chloroform/apps.py:11
-msgid "Chloroform Contact form builder"
+
+#: chloroform/admin.py:91
+msgid "Incorrect template syntax"
 msgstr ""
+
+#: chloroform/apps.py:16
+msgid "Chloroform Contact form builder"
+msgstr "Constructeur de formulaires de contact Chloroform"
 
 #: chloroform/helpers.py:22
 msgid "Submit"
-msgstr ""
+msgstr "Soumettre"
 
 #: chloroform/models.py:25
 msgid "Recipient of mails sent with this configuration"
 msgstr ""
 
-#: chloroform/models.py:27
+#: chloroform/models.py:28
 msgid "An email or a list of emails separated by ;"
 msgstr ""
 
-#: chloroform/models.py:30
+#: chloroform/models.py:31
 msgid "Success message"
 msgstr ""
 
-#: chloroform/models.py:31
+#: chloroform/models.py:32
 msgid "This message is shown to the user after he/she uses the contact form"
 msgstr ""
 
-#: chloroform/models.py:35
+#: chloroform/models.py:36
 msgid "Subject"
 msgstr ""
 
-#: chloroform/models.py:36
+#: chloroform/models.py:37
 msgid "Subject of the mail sent to the target"
 msgstr ""
 
-#: chloroform/models.py:38
+#: chloroform/models.py:39
 msgid "Contact on {{site}}"
 msgstr ""
 
-#: chloroform/models.py:53
+#: chloroform/models.py:54
 msgid "Name of the field in the HTML"
 msgstr ""
 
-#: chloroform/models.py:57
+#: chloroform/models.py:58
 msgid "Name shown to the user"
 msgstr ""
 
-#: chloroform/models.py:61
+#: chloroform/models.py:62
 msgid "Description or help text shown to the user"
 msgstr ""
 
-#: chloroform/models.py:65
+#: chloroform/models.py:66
 msgid "Type of metadata, set the validation and the HTML field"
 msgstr ""
 
-#: chloroform/models.py:68
+#: chloroform/models.py:69
 msgid "Nom"
 msgstr ""
 
-#: chloroform/models.py:69
+#: chloroform/models.py:70
 #: chloroform/templates/chloroform/mails/notification.txt:2
 msgid "Phone"
 msgstr ""
 
-#: chloroform/models.py:70
+#: chloroform/models.py:71
 msgid "Address"
 msgstr ""
 
-#: chloroform/models.py:71 chloroform/models.py:162
+#: chloroform/models.py:72 chloroform/models.py:163
 #: chloroform/templates/chloroform/mails/notification.txt:3
 msgid "Email"
 msgstr ""
 
-#: chloroform/models.py:72
+#: chloroform/models.py:73
 msgid "Boolean"
 msgstr ""
 
-#: chloroform/models.py:73
+#: chloroform/models.py:74
 msgid "Text"
 msgstr ""
 
-#: chloroform/models.py:74 chloroform/models.py:165
+#: chloroform/models.py:75 chloroform/models.py:166
 msgid "Message"
 msgstr ""
 
-#: chloroform/models.py:75
+#: chloroform/models.py:76
 msgid "Choice"
 msgstr ""
 
-#: chloroform/models.py:158
+#: chloroform/models.py:159
 msgid "Creation date"
 msgstr ""
 
-#: chloroform/models.py:169
+#: chloroform/models.py:170
 msgid "Contact"
 msgstr ""
 
-#: chloroform/models.py:170
+#: chloroform/models.py:171
 msgid "Contacts"
 msgstr ""
 

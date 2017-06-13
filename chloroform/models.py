@@ -23,6 +23,7 @@ class Configuration(models.Model):
     )
     target = models.CharField(
         _('Recipient of mails sent with this configuration'),
+        blank=True,
         max_length=2000,
         help_text=_('An email or a list of emails separated by ;')
     )
@@ -140,7 +141,7 @@ class Requirement(models.Model):
         ]
 
     def __str__(self):
-        return '{} on {}'.format(self.metadata, self.configuration)
+        return u'{} on {}'.format(self.metadata, self.configuration)
 
     def get_field(self):
         field_class = self.metadata.get_field_class()

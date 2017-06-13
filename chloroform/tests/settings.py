@@ -1,8 +1,13 @@
+import os.path
+
 SECRET_KEY = '4'
 
 DEBUG = True
 ALLOWED_HOSTS = ['*']
 INSTALLED_APPS = [
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.admin',
     'crispy_forms',
     'chloroform',
     'import_export',
@@ -11,7 +16,9 @@ INSTALLED_APPS = [
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(os.path.dirname(__file__), 'templates'),
+        ],
         'APP_DIRS': True,
     },
 ]
