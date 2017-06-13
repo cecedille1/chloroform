@@ -1,0 +1,9 @@
+include README.md
+include setup.py
+include requirements.txt
+
+recursive-include chloroform/templates/ *
+recursive-include chloroform/fixtures/ *
+
+exclude pavement.py
+global-exclude *.orig *.pyc *.log *.swp local_settings.py

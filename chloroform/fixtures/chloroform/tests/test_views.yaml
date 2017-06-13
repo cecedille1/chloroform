@@ -1,0 +1,47 @@
+- model: chloroform.Configuration
+  pk: 1
+  fields:
+      name: default
+- model: chloroform.Configuration
+  pk: 2
+  fields:
+      name: alternative
+- model: chloroform.Metadata
+  pk: 1
+  fields:
+      name: prenom
+      verbose_name: Prénom
+      type: name
+      description: mark01
+- model: chloroform.Metadata
+  pk: 2
+  fields:
+      name: nom
+      verbose_name: Nom
+      type: name
+      description: mark02
+- model: chloroform.Metadata
+  pk: 3
+  fields:
+      name: optin
+      verbose_name: Opt-in newsletter
+      type: bool
+      description: mark03
+- model: chloroform.Requirement
+  pk: 1
+  fields:
+      configuration: 1
+      metadata: 1
+      required: true
+- model: chloroform.Requirement
+  pk: 2
+  fields:
+      configuration: 1
+      metadata: 2
+      required: false
+- model: chloroform.Requirement
+  pk: 3
+  fields:
+      configuration: 2
+      metadata: 3
+      required: false

@@ -1,0 +1,10 @@
+- model: chloroform.Configuration
+  pk: 1
+  fields:
+      name: default
+      target: 'chloroform@emencia.com;chloroform@emencia.io'
+- model: chloroform.Configuration
+  pk: 2
+  fields:
+      name: alternative
+      target: ''

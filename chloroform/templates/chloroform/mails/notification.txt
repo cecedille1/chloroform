@@ -1,0 +1,7 @@
+{% load i18n %}{% if contact.full_name %}{% trans "Identity" %} : {{ contact.contact_name }}{% endif %}
+{% trans "Phone" %} : {{ contact.phone }}
+{% trans "Email" %} : {{ contact.email }}
+{% trans "Company" %} : {{ contact.company }}
+
+{% trans "Comments" %} :
+{{ contact.message }}

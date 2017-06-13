@@ -1,0 +1,5 @@
+pytest
+pytest-django
+pyyaml
+pytest-pythonpath
+-r ./optional.txt

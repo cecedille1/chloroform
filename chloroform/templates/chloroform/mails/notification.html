@@ -1,0 +1,20 @@
+<html>
+<head></head>
+<body>
+{% load i18n %}
+<h2> {% blocktrans %}Hello you have a contact from {{domain}}{% endblocktrans %} </h2>
+<h4> {% blocktrans %}On {{contact.creation_date|date}}, {{contact.email}} sent you this message:{% endblocktrans %} </h4>
+<p>
+{{contact.message}}
+<p>
+<ul>
+    {% for metadata in contact.metadatas.all %}
+    <li>
+    <strong>
+        {{metadata.name}}
+    </strong> {{metadata.value}}
+    </li>
+    {% endfor%}
+</ul>
+</body>
+</html>

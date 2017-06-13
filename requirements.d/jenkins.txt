@@ -1,0 +1,4 @@
+-r ../requirements.txt
+setuptools>=34
+flake8
+wheel
