@@ -1,6 +1,7 @@
 SECRET_KEY = '4'
 
 DEBUG = True
+ALLOWED_HOSTS = ['*']
 INSTALLED_APPS = [
     'crispy_forms',
     'chloroform',
