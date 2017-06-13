@@ -2,11 +2,21 @@
 
 from django import forms
 from django.db import transaction
+from django.conf import settings
 
 from chloroform.models import Contact, ContactMetadata
 
 
+if 'captcha' in settings.INSTALLED_APPS:
+    from captcha.fields import ReCaptchaField
+else:
+    ReCaptchaField = None
+
+
 class BaseForm(forms.ModelForm):
+    if ReCaptchaField:
+        captcha = ReCaptchaField(attrs={'theme': 'clean'})
+
     class Meta:
         model = Contact
         fields = [
