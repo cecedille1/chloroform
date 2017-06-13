@@ -23,6 +23,7 @@ class Configuration(models.Model):
     )
     target = models.CharField(
         _('Recipient of mails sent with this configuration'),
+        blank=True,
         max_length=2000,
         help_text=_('An email or a list of emails separated by ;')
     )
