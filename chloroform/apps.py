@@ -3,7 +3,12 @@
 from django.apps import AppConfig
 from django.db.models.signals import post_save
 from django.utils.translation import ugettext_lazy as _
-from django.db import transaction
+
+try:
+    from django.db.transaction import on_commit
+except ImportError:
+    def on_commit(fn):
+        fn()
 
 
 class ChloroformAppConfig(AppConfig):
@@ -26,6 +31,6 @@ def after_saving_contact(sender, instance, created, raw, **kw):
     cmb = ChloroformMailBuilder(instance.configuration)
     email = cmb.get_email(instance)
 
-    @transaction.on_commit
+    @on_commit
     def send_email():
         email.send()

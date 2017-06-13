@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import pytest
+import django
 try:
     from unittest import mock
 except ImportError:
@@ -13,6 +14,8 @@ from chloroform.models import Contact, Configuration
 
 
 @pytest.mark.django_db
+@pytest.mark.xfail(condition=django.VERSION < (1, 9),
+                   reason='Django 1.8 has not transaction.on_commit')
 def test_after_saving_contact():
     call_command('loaddata', 'chloroform/tests/test_apps.yaml')
     instance = Contact.objects.get(pk=1)
