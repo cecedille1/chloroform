@@ -134,7 +134,7 @@ def test_chloroform_success_default(rf):
     resp = cfsv(request)
 
     assert resp.status_code == 200
-    assert resp.context_data['configuration'].pk == 2
+    assert resp.context_data['configuration'].pk == 1
 
 
 @pytest.mark.django_db
