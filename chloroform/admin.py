@@ -2,7 +2,10 @@
 
 
 from django.contrib import admin
+from django import forms
+from django.template import Template, TemplateSyntaxError
 from django.conf import settings
+from django.utils.translation import ugettext as _
 
 from chloroform.models import (
     Configuration,
@@ -12,6 +15,11 @@ from chloroform.models import (
     Contact,
     ContactMetadata,
 )
+
+try:
+    from djangocms_text_ckeditor.fields import HTMLFormField
+except ImportError:
+    HTMLFormField = None
 
 
 class AlternativeInline(admin.TabularInline):
@@ -59,8 +67,34 @@ class RequirementInline(admin.TabularInline):
     ]
 
 
+class ConfigurationForm(forms.ModelForm):
+    if HTMLFormField:
+        success_message = Configuration._meta.get_field('success_message').formfield(
+            widget=None,
+            form_class=HTMLFormField,
+        )
+
+    class Meta:
+        model = Configuration
+        fields = [
+            'name',
+            'target',
+            'success_message',
+            'subject',
+        ]
+
+    def clean_subject(self):
+        subject = self.cleaned_data['subject']
+        try:
+            Template(subject)
+        except TemplateSyntaxError:
+            raise forms.ValidationError(_('Incorrect template syntax'))
+        return subject
+
+
 @admin.register(Configuration)
 class ConfigurationAdmin(admin.ModelAdmin):
+    form = ConfigurationForm
     list_display = [
         'name',
     ]
