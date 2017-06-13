@@ -95,17 +95,8 @@ def setup_options():
         include_package_data=True,
         install_requires=parse_requirements('requirements.txt'),
         zip_safe=False,
-)
-
+    )
 
 
 if os.path.realpath(sys.argv[0]) == os.path.realpath(os.path.join(os.path.dirname(__file__), 'setup.py')):
     setup_options()
-
-
-try:
-    import sett
-    with open(ROOT.joinpath('localpavement.py'), 'r') as localpavement:
-        exec(localpavement.read(), locals(), globals())
-except (OSError, ImportError) as e:
-    pass

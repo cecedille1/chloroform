@@ -127,14 +127,14 @@ def test_chloroform_success(rf):
 
 
 @pytest.mark.django_db
-def test_chloroform_success(rf):
+def test_chloroform_success_default(rf):
     call_command('loaddata', 'chloroform/tests/test_views.yaml')
     cfsv = ChloroformSuccessView.as_view()
-    request = rf.get('/')
+    request = rf.get('/', configuration='alternative')
     resp = cfsv(request)
 
     assert resp.status_code == 200
-    assert resp.context_data['configuration'].pk == 1
+    assert resp.context_data['configuration'].pk == 2
 
 
 @pytest.mark.django_db

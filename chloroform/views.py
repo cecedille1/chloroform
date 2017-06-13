@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from django.views.generic import FormView, TemplateView
+from django.views.generic import FormView
 from django.views.generic.detail import SingleObjectMixin, DetailView
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
