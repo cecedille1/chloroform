@@ -4,6 +4,7 @@ include requirements.txt
 
 recursive-include chloroform/templates/ *
 recursive-include chloroform/fixtures/ *
+recursive-exclude chloroform/fixtures/chloroform/tests/ *
 
 exclude pavement.py
 global-exclude *.orig *.pyc *.log *.swp local_settings.py
