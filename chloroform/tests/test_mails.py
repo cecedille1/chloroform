@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import os.path
 import pytest
 
 from chloroform.mails import ChloroformMailBuilder
@@ -12,7 +11,6 @@ def cf(settings):
     settings.CHLOROFORM_DOMAIN = 'https://chloroform.emencia.net'
     settings.CHLOROFORM_TARGET_EMAILS = ['chloroform@emencia.net']
     settings.DEFAULT_FROM_EMAIL = 'contact@emencia.net'
-    settings.TEMPLATES[0]['DIRS'].append(os.path.join(os.path.dirname(__file__), 'templates'))
     yield
 
 
