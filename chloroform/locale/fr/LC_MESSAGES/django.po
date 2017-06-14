@@ -14,7 +14,7 @@ msgstr ""
 
 #: chloroform/admin.py:91
 msgid "Incorrect template syntax"
-msgstr ""
+msgstr "Syntaxe de template incorrecte"
 
 #: chloroform/apps.py:16
 msgid "Chloroform Contact form builder"
@@ -26,15 +26,15 @@ msgstr "Soumettre"
 
 #: chloroform/models.py:25
 msgid "Recipient of mails sent with this configuration"
-msgstr ""
+msgstr "Destinataire des mails envoyés avec cette configuration"
 
 #: chloroform/models.py:28
 msgid "An email or a list of emails separated by ;"
-msgstr ""
+msgstr "Un email ou une liste d'email séparés par des ;"
 
 #: chloroform/models.py:31
 msgid "Success message"
-msgstr ""
+msgstr "Message de succès"
 
 #: chloroform/models.py:32
 msgid "This message is shown to the user after he/she uses the contact form"
@@ -42,81 +42,81 @@ msgstr ""
 
 #: chloroform/models.py:36
 msgid "Subject"
-msgstr ""
+msgstr "Sujet"
 
 #: chloroform/models.py:37
 msgid "Subject of the mail sent to the target"
-msgstr ""
+msgstr "Sujet du mail envoyé aux destinataires"
 
 #: chloroform/models.py:39
 msgid "Contact on {{site}}"
-msgstr ""
+msgstr "Contact sur {{site}}"
 
 #: chloroform/models.py:54
 msgid "Name of the field in the HTML"
-msgstr ""
+msgstr "Nom du champs dans le HTML"
 
 #: chloroform/models.py:58
 msgid "Name shown to the user"
-msgstr ""
+msgstr "Nom affiché à l'utilisateur"
 
 #: chloroform/models.py:62
 msgid "Description or help text shown to the user"
-msgstr ""
+msgstr "Description ou texte d'aide affiché à l'utilisateur"
 
 #: chloroform/models.py:66
 msgid "Type of metadata, set the validation and the HTML field"
-msgstr ""
+msgstr "Type de métadonné, défini la validation et le champ HTML"
 
 #: chloroform/models.py:69
 msgid "Nom"
-msgstr ""
+msgstr "Nom"
 
 #: chloroform/models.py:70
 #: chloroform/templates/chloroform/mails/notification.txt:2
 msgid "Phone"
-msgstr ""
+msgstr "Téléphone"
 
 #: chloroform/models.py:71
 msgid "Address"
-msgstr ""
+msgstr "Adresse"
 
 #: chloroform/models.py:72 chloroform/models.py:163
 #: chloroform/templates/chloroform/mails/notification.txt:3
 msgid "Email"
-msgstr ""
+msgstr "Email"
 
 #: chloroform/models.py:73
 msgid "Boolean"
-msgstr ""
+msgstr "Booléen"
 
 #: chloroform/models.py:74
 msgid "Text"
-msgstr ""
+msgstr "Texte"
 
 #: chloroform/models.py:75 chloroform/models.py:166
 msgid "Message"
-msgstr ""
+msgstr "Message"
 
 #: chloroform/models.py:76
 msgid "Choice"
-msgstr ""
+msgstr "Choix"
 
 #: chloroform/models.py:159
 msgid "Creation date"
-msgstr ""
+msgstr "Date de création"
 
 #: chloroform/models.py:170
 msgid "Contact"
-msgstr ""
+msgstr "Contact"
 
 #: chloroform/models.py:171
 msgid "Contacts"
-msgstr ""
+msgstr "Contacts"
 
 #: chloroform/templates/chloroform/base.html:4
 msgid "Chloroform"
-msgstr ""
+msgstr "Chloroform"
 
 #: chloroform/templates/chloroform/mails/notification.html:5
 #, python-format

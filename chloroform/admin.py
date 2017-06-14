@@ -27,7 +27,15 @@ class AlternativeInline(admin.TabularInline):
     fields = [
         'label',
         'value',
+        'order',
     ]
+
+
+if 'adminsortable2' in settings.INSTALLED_APPS:
+    from adminsortable2.admin import SortableInlineAdminMixin
+    AlternativeInline = type(AlternativeInline)('AlternativeInline',
+                                                (SortableInlineAdminMixin, AlternativeInline),
+                                                {})
 
 
 @admin.register(Metadata)
