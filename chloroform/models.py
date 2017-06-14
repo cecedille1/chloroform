@@ -114,6 +114,14 @@ class Alternative(models.Model):
         max_length=255,
         blank=True
     )
+    order = models.PositiveIntegerField(
+        default=0,
+    )
+
+    class Meta:
+        ordering = [
+            'order',
+        ]
 
     def get_value(self):
         return self.value or self.label
