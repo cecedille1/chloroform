@@ -39,3 +39,9 @@ Usage
 
 Chloroform can be called by the views `chloroform` and `default-chloroform` and
 the template tag `{% chloroform %}`.
+
+Optional features
+-----------------
+
+* adminsortable2 is used if it's in the `INSTALLED_APPS`
+* captcha
