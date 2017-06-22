@@ -29,14 +29,14 @@ class ChloroformTagHelper(ChloroformHelper):
 @receiver(setting_changed)
 def on_setting_changed(sender, setting, **kw):
     global _form_helper_module
-    if setting == 'CHLOROFOM_HELPERS_MODULE':
+    if setting == 'CHLOROFORM_HELPERS_MODULE':
         _form_helper_module = uninitialized
 
 
 def get_form_helper_module():
     global _form_helper_module
     if _form_helper_module is uninitialized:
-        module_name = getattr(settings, 'CHLOROFOM_HELPERS_MODULE', None)
+        module_name = getattr(settings, 'CHLOROFORM_HELPERS_MODULE', None)
         if module_name is not None:
             _form_helper_module = importlib.import_module(module_name)
     return _form_helper_module
@@ -56,9 +56,10 @@ class FormHelperGetterMixin(object):
             pass
         return self.form_helper_class
 
-    def get_form_helper(self):
+    def get_form_helper(self, form=None):
         helper_class = self.get_form_helper_class()
         kwargs = self.get_form_helper_kwargs()
+        kwargs.setdefault('form', form)
         return helper_class(**kwargs)
 
     def get_form_helper_kwargs(self):
@@ -68,7 +69,8 @@ class FormHelperGetterMixin(object):
 class FormHelperMixin(FormHelperGetterMixin):
     def get_context_data(self, **kw):
         context = super(FormHelperMixin, self).get_context_data(**kw)
+        form = context.get('form')
         context.update({
-            'form_helper': self.get_form_helper(),
+            'form_helper': self.get_form_helper(form),
         })
         return context

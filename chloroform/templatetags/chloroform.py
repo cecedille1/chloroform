@@ -26,8 +26,10 @@ def chloroform(name=None):
 
     helper_getter = ChloroformHelperGetter()
     form_builder = ContactFormBuilder(conf)
+    form_class = form_builder.get_form()
+    form = form_class()
     return {
-        'form_helper': helper_getter.get_form_helper(),
+        'form_helper': helper_getter.get_form_helper(form),
         'configuration': conf,
-        'form': form_builder.get_form(),
+        'form': form,
     }

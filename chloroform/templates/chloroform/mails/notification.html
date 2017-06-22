@@ -8,7 +8,7 @@
 {{contact.message}}
 <p>
 <ul>
-    {% for metadata in contact.metadatas.all %}
+    {% for metadata in metadata.items %}
     <li>
     <strong>
         {{metadata.name}}

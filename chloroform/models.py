@@ -38,6 +38,10 @@ class Configuration(models.Model):
         max_length=1000,
         default=_('Contact on {{site}}'),
     )
+    metadatas = models.ManyToManyField(
+        'Metadata',
+        through='Requirement',
+    )
 
     def get_targets(self):
         if not self.target:

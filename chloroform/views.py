@@ -24,8 +24,8 @@ class ChloroformView(SingleObjectMixin, FormHelperMixin, FormView):
         fb = ContactFormBuilder(self.object)
         return fb.get_form()
 
-    def get_form_helper(self):
-        helper = super(ChloroformView, self).get_form_helper()
+    def get_form_helper(self, form=None):
+        helper = super(ChloroformView, self).get_form_helper(form)
         if self.slug_url_kwarg not in self.kwargs:
             helper.form_action = reverse('default-chloroform')
         else:
