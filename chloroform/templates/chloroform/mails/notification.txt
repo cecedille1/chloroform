@@ -1,7 +1,7 @@
-{% load i18n %}{% if contact.full_name %}{% trans "Identity" %} : {{ contact.contact_name }}{% endif %}
-{% trans "Phone" %} : {{ contact.phone }}
-{% trans "Email" %} : {{ contact.email }}
-{% trans "Company" %} : {{ contact.company }}
+{% load i18n %}
+{% blocktrans %}Hello you have a contact from {{domain}}{% endblocktrans %}
+{% blocktrans %}On {{contact.creation_date|date}}, {{contact.email}} sent you this message:{% endblocktrans %}
 
-{% trans "Comments" %} :
-{{ contact.message }}
+{{contact.message}}
+{% for metadata in metadata.items %}{{metadata.name}}: {{metadata.value}}
+{% endfor %}
