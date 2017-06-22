@@ -2,6 +2,7 @@
 
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import select_template
+from django.utils.functional import cached_property
 from django.template import Template, Context
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
@@ -12,6 +13,7 @@ class ChloroformMailBuilder(object):
     body_html_template = 'chloroform/mails/notification.html'
 
     def __init__(self, configuration, domain=None, request=None):
+        self.configuration = configuration
         self.to_email_addresses = configuration.get_targets()
         self.subject_template = Template(configuration.subject)
 
@@ -30,12 +32,29 @@ class ChloroformMailBuilder(object):
                                        ' with the setting CHLOROFORM_DOMAIN or with the request')
         self.domain = domain
 
-    def get_email(self, contact):
-        context = {
+    @cached_property
+    def configuration_metadata(self):
+        for metadata in self.configuration.metadatas.all():
+            return {
+                metadata.name: metadata.verbose_name,
+            }
+
+    def get_context(self, contact):
+        cmd = self.configuration_metadata
+        return {
             'contact': contact,
             'domain': self.domain,
             'site': self.domain,
+            'metadata': {
+                cmd.get(name, name): value
+                for name, value in contact.metadatas.values_list('name', 'value')
+            }
         }
+
+    def get_email(self, contact):
+        if contact.configuration_id != self.configuration.pk:
+            raise ValueError('Mismatching configuration')
+        context = self.get_context(contact)
         message = EmailMultiAlternatives(
             self.subject_template.render(Context(context)).strip().replace('\n', ' '),
             self.body_template.render(context),

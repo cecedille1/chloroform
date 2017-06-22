@@ -2,6 +2,8 @@
 
 import pytest
 
+from django.core.management import call_command
+
 from chloroform.mails import ChloroformMailBuilder
 from chloroform.models import Contact, Configuration
 
@@ -73,3 +75,18 @@ def test_mail_builder_from_conf(settings, cf):
     e = c.get_email(Contact())
 
     assert e.from_email == 'contact@chloroform.net'
+
+
+@pytest.mark.django_db
+def test_mail_builder_metadata(cf):
+    call_command('loaddata', 'chloroform/tests/test_mails.yaml')
+
+    conf = Configuration.objects.get_default()
+    c = ChloroformMailBuilder(conf)
+
+    contact = Contact.objects.get(pk=1)
+    context = c.get_context(contact)
+
+    assert context['metadata'] == {
+        'nom': 'Albert',
+    }
