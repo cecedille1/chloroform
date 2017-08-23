@@ -23,6 +23,8 @@ class BaseForm(forms.ModelForm):
             'email',
             'message',
         ]
+        if ReCaptchaField:
+            fields.append('captcha')
 
     @transaction.atomic
     def save(self):
