@@ -83,7 +83,7 @@ def test_chloroform_fill_none(rf):
     assert resp['Location'] == '/success/'
 
     c = Contact.objects.get()
-    assert c.configuration_id == 2
+    assert c.configuration_id
     assert c.email == 'abc@def.org'
     assert c.message == 'blabla'
 

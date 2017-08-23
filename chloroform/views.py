@@ -5,8 +5,15 @@ from django.views.generic.detail import SingleObjectMixin, DetailView
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 
+try:
+    from django.db.transaction import on_commit
+except ImportError:
+    def on_commit(fn):
+        fn()
+
 from chloroform.helpers import ChloroformHelper, FormHelperMixin
 from chloroform.forms import ContactFormBuilder
+from chloroform.mails import ChloroformMailBuilder
 from chloroform.models import (
     Configuration,
 )
@@ -62,6 +69,14 @@ class ChloroformView(SingleObjectMixin, FormHelperMixin, FormView):
         if self.slug_url_kwarg not in self.kwargs:
             return reverse('default-chloroform-success')
         return reverse('chloroform-success', args=[self.object.name])
+
+    def send_email(self, contact):
+        cmb = ChloroformMailBuilder(self.configuration)
+        email = cmb.get_email(contact)
+
+        @on_commit
+        def send_email():
+            email.send()
 
 
 class ChloroformSuccessView(DetailView):
