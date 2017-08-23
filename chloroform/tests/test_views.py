@@ -14,13 +14,45 @@ urlpatterns = [
 ]
 
 
+@pytest.fixture
+def success_view(rf):
+    cfsv = ChloroformSuccessView.as_view()
+
+    def do_success_view(**kw):
+        request = rf.get('/')
+        return cfsv(request, **kw)
+    return do_success_view
+
+
+@pytest.fixture
+def chloro_view(rf):
+    cfv = ChloroformView.as_view()
+
+    def inner_chloro_view(**kw):
+        request = rf.get('/')
+        return cfv(request, **kw)
+    return inner_chloro_view
+
+
+@pytest.fixture
+def fill_view(rf):
+    cfv = ChloroformView.as_view()
+
+    def inner_chloro_view(data=None, **kw):
+        data = data or {
+            'email': 'abc@def.org',
+            'message': 'blabla',
+        }
+        request = rf.post('/', data=data)
+        return cfv(request, **kw)
+    return inner_chloro_view
+
+
 @pytest.mark.django_db
-def test_chloroform_view(rf):
+def test_chloroform_view(chloro_view):
     call_command('loaddata', 'chloroform/tests/test_views.yaml')
 
-    cfv = ChloroformView.as_view()
-    request = rf.get('/')
-    resp = cfv(request)
+    resp = chloro_view()
 
     assert resp.status_code == 200
     assert set(resp.context_data['form'].fields) == {'email', 'message', 'prenom', 'nom'}
@@ -28,21 +60,17 @@ def test_chloroform_view(rf):
 
 
 @pytest.mark.django_db
-def test_chloroform_view_none(rf):
-    cfv = ChloroformView.as_view()
-    request = rf.get('/')
-    resp = cfv(request)
+def test_chloroform_view_none(chloro_view):
+    resp = chloro_view()
 
     assert resp.status_code == 200
     assert set(resp.context_data['form'].fields) == {'email', 'message'}
 
 
 @pytest.mark.django_db
-def test_chloroform_view_alternative(rf):
+def test_chloroform_view_alternative(chloro_view):
     call_command('loaddata', 'chloroform/tests/test_views.yaml')
-    cfv = ChloroformView.as_view()
-    request = rf.get('/')
-    resp = cfv(request, configuration='alternative')
+    resp = chloro_view(configuration='alternative')
 
     assert resp.status_code == 200
     assert set(resp.context_data['form'].fields) == {'email', 'message', 'optin'}
@@ -51,14 +79,9 @@ def test_chloroform_view_alternative(rf):
 
 @pytest.mark.django_db
 @pytest.mark.urls('chloroform.tests.test_views')
-def test_chloroform_fill_alternative(rf):
+def test_chloroform_fill_alternative(fill_view):
     call_command('loaddata', 'chloroform/tests/test_views.yaml')
-    cfv = ChloroformView.as_view()
-    request = rf.post('/', {
-        'email': 'abc@def.org',
-        'message': 'blabla',
-    })
-    resp = cfv(request, configuration='alternative')
+    resp = fill_view(configuration='alternative')
 
     assert resp.status_code == 302
     assert resp['Location'] == '/alternative/success/'
@@ -71,13 +94,8 @@ def test_chloroform_fill_alternative(rf):
 
 @pytest.mark.django_db
 @pytest.mark.urls('chloroform.tests.test_views')
-def test_chloroform_fill_none(rf):
-    cfv = ChloroformView.as_view()
-    request = rf.post('/', {
-        'email': 'abc@def.org',
-        'message': 'blabla',
-    })
-    resp = cfv(request)
+def test_chloroform_fill_none(fill_view):
+    resp = fill_view()
 
     assert resp.status_code == 302
     assert resp['Location'] == '/success/'
@@ -90,16 +108,14 @@ def test_chloroform_fill_none(rf):
 
 @pytest.mark.django_db
 @pytest.mark.urls('chloroform.tests.test_views')
-def test_chloroform_fill(rf):
+def test_chloroform_fill(fill_view):
     call_command('loaddata', 'chloroform/tests/test_views.yaml')
-    cfv = ChloroformView.as_view()
-    request = rf.post('/', {
+    resp = fill_view({
         'email': 'abc@def.org',
         'message': 'blabla',
         'prenom': 'John',
         'nom': 'McEnroe',
     })
-    resp = cfv(request)
 
     assert resp.status_code == 302
     assert resp['Location'] == '/success/'
@@ -116,10 +132,8 @@ def test_chloroform_fill(rf):
 
 
 @pytest.mark.django_db
-def test_chloroform_success(rf):
-    cfsv = ChloroformSuccessView.as_view()
-    request = rf.get('/')
-    resp = cfsv(request)
+def test_chloroform_success(success_view):
+    resp = success_view()
 
     assert resp.status_code == 200
     assert resp.context_data['configuration'].pk is None
@@ -127,22 +141,20 @@ def test_chloroform_success(rf):
 
 
 @pytest.mark.django_db
-def test_chloroform_success_default(rf):
+def test_chloroform_success_default(success_view):
     call_command('loaddata', 'chloroform/tests/test_views.yaml')
-    cfsv = ChloroformSuccessView.as_view()
-    request = rf.get('/', configuration='alternative')
-    resp = cfsv(request)
+
+    resp = success_view()
 
     assert resp.status_code == 200
     assert resp.context_data['configuration'].pk == 1
 
 
 @pytest.mark.django_db
-def test_chloroform_success_alternative(rf):
+def test_chloroform_success_alternative(success_view):
     call_command('loaddata', 'chloroform/tests/test_views.yaml')
-    cfsv = ChloroformSuccessView.as_view()
-    request = rf.get('/')
-    resp = cfsv(request, configuration='alternative')
+
+    resp = success_view(configuration='alternative')
 
     assert resp.status_code == 200
     assert resp.context_data['configuration'].pk == 2
