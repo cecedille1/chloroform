@@ -1,0 +1,30 @@
+- model: chloroform.Configuration
+  pk: 1
+  fields:
+      name: default
+- model: chloroform.Metadata
+  pk: 1
+  fields:
+      name: prenom
+      verbose_name: Prénom
+      type: name
+      description: mark01
+- model: chloroform.Metadata
+  pk: 2
+  fields:
+      name: nom
+      verbose_name: Nom
+      type: name
+      description: mark02
+- model: chloroform.Requirement
+  pk: 1
+  fields:
+      configuration: 1
+      metadata: 1
+      required: true
+- model: chloroform.Requirement
+  pk: 2
+  fields:
+      configuration: 1
+      metadata: 2
+      required: false
