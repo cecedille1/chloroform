@@ -131,6 +131,14 @@ def test_chloroform_fill(fill_view):
     }
 
 
+@pytest.mark.usefixtures('transactional_db')
+def test_chloroform_success_send_mail(fill_view, mailoutbox):
+    call_command('loaddata', 'chloroform/tests/test_views.yaml')
+    fill_view(configuration='alternative')
+    assert mailoutbox
+    assert mailoutbox[0].to == ['admin@chloro.form']
+
+
 @pytest.mark.django_db
 def test_chloroform_success(success_view):
     resp = success_view()

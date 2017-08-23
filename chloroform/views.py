@@ -62,7 +62,8 @@ class ChloroformView(SingleObjectMixin, FormHelperMixin, FormView):
         if not self.object.pk:
             self.object.save()
         form.instance.configuration = self.object
-        form.save()
+        instance = form.save()
+        self.send_email(instance)
         return super(ChloroformView, self).form_valid(form)
 
     def get_success_url(self):
@@ -71,7 +72,7 @@ class ChloroformView(SingleObjectMixin, FormHelperMixin, FormView):
         return reverse('chloroform-success', args=[self.object.name])
 
     def send_email(self, contact):
-        cmb = ChloroformMailBuilder(self.configuration)
+        cmb = ChloroformMailBuilder(self.object)
         email = cmb.get_email(contact)
 
         @on_commit
