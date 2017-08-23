@@ -6,27 +6,18 @@
 #Virtual env
 /.envs/
 /venv
+/node_modules/
 
 # C extensions
 *.so
 
 # Packages
-.cache
+/.cache
 *.egg
 *.egg-info
-dist
-build
-eggs
+/dist
 parts
 var
-sdist
-develop-eggs
-.installed.cfg
-lib
-lib64
-
-# Installer logs
-pip-log.txt
 
 # Unit test / coverage reports
 .coverage
@@ -40,6 +31,8 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
+.project.vip
+.ignore
 
 # Complexity
 output/*.html
