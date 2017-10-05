@@ -2,7 +2,6 @@
 
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import select_template
-from django.utils.functional import cached_property
 from django.template import Template, Context
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
