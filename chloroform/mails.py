@@ -32,23 +32,15 @@ class ChloroformMailBuilder(object):
                                        ' with the setting CHLOROFORM_DOMAIN or with the request')
         self.domain = domain
 
-    @cached_property
-    def configuration_metadata(self):
-        for metadata in self.configuration.metadatas.all():
-            return {
-                metadata.name: metadata.verbose_name,
-            }
-
     def get_context(self, contact):
-        cmd = self.configuration_metadata
         return {
             'contact': contact,
             'domain': self.domain,
             'site': self.domain,
             'metadata': {
-                cmd.get(name, name): value
+                name: value
                 for name, value in contact.metadatas.values_list('name', 'value')
-            }
+            },
         }
 
     def get_email(self, contact):
