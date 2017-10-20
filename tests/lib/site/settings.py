@@ -33,6 +33,9 @@ TEMPLATES = [
         'APP_DIRS': True,
     },
 ]
+MIDDLEWARE_CLASSES = [
+    'django.middleware.locale.LocaleMiddleware',
+]
 MIDDLEWARE = [
     'django.middleware.locale.LocaleMiddleware',
 ]
