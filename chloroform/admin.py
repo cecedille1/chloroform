@@ -16,20 +16,17 @@ from chloroform.models import (
     ContactMetadata,
 )
 
-try:
-    from djangocms_text_ckeditor.fields import HTMLFormField
-except ImportError:
-    HTMLFormField = None
+if 'ckeditor' in settings.INSTALLED_APPS:
+    from ckeditor.fields import RichTextFormField
+else:
+    RichTextFormField = None
 
 
 if 'modeltranslation' in settings.INSTALLED_APPS:
-    from modeltranslation.forms import TranslationModelForm
     from modeltranslation.admin import TranslationAdmin, TranslationTabularInline
-    BaseModelForm = TranslationModelForm
     BaseModelAdmin = TranslationAdmin
     BaseTabularInline = TranslationTabularInline
 else:
-    BaseModelForm = forms.ModelForm
     BaseModelAdmin = admin.ModelAdmin
     BaseTabularInline = admin.TabularInline
 
@@ -87,19 +84,12 @@ class RequirementInline(admin.TabularInline):
     ]
 
 
-class ConfigurationForm(BaseModelForm):
-    if HTMLFormField:
-        success_message = Configuration._meta.get_field('success_message').formfield(
-            widget=None,
-            form_class=HTMLFormField,
-        )
-
+class ConfigurationForm(forms.ModelForm):
     class Meta:
         model = Configuration
         fields = [
             'name',
             'target',
-            'success_message',
             'subject',
         ]
 
@@ -115,12 +105,26 @@ class ConfigurationForm(BaseModelForm):
 @admin.register(Configuration)
 class ConfigurationAdmin(BaseModelAdmin):
     form = ConfigurationForm
+    fields = [
+        'name',
+        'target',
+        'subject',
+        'success_message',
+    ]
     list_display = [
         'name',
     ]
     inlines = [
         RequirementInline,
     ]
+
+    def formfield_for_dbfield(self, db_field, **kwargs):
+        if db_field.name == 'success_message':
+            kwargs.update(
+                widget=None,
+                form_class=RichTextFormField,
+            )
+        return super(ConfigurationAdmin, self).formfield_for_dbfield(db_field, **kwargs)
 
 
 class ContactMetadataInline(admin.TabularInline):

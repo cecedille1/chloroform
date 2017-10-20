@@ -18,6 +18,7 @@ PASSWORD_HASHERS = [
 
 ALLOWED_HOSTS = ['*']
 INSTALLED_APPS = [
+    'ckeditor',
     'modeltranslation',
     'django.contrib.sessions',
     'django.contrib.auth',
