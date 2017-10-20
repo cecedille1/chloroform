@@ -45,8 +45,8 @@ msgid "Subject"
 msgstr "Sujet"
 
 #: chloroform/models.py:37
-msgid "Subject of the mail sent to the target"
-msgstr "Sujet du mail envoyé aux destinataires"
+msgid "Subject of the notification mail"
+msgstr "Sujet du mail de notification"
 
 #: chloroform/models.py:39
 msgid "Contact on {{site}}"

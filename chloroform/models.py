@@ -34,7 +34,7 @@ class Configuration(models.Model):
     )
     subject = models.CharField(
         _('Subject'),
-        help_text=_('Subject of the mail sent to the target'),
+        help_text=_('Subject of the notification mail'),
         max_length=1000,
         default=_('Contact on {{site}}'),
     )
