@@ -1,0 +1,8 @@
+- model: auth.user
+  pk: 1
+  fields:
+      username: admin
+      password: md5$123$d2bc2f8d09990ebe87c809684fd78c66
+      is_superuser: True
+      is_staff: True
+      is_active: True
