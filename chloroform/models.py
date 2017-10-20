@@ -70,7 +70,7 @@ class Metadata(models.Model):
         _('Type of metadata, set the validation and the HTML field'),
         max_length=100,
         choices=[
-            ('name', _('Nom')),
+            ('name', _('Name')),
             ('phone', _('Phone')),
             ('address', _('Address')),
             ('email', _('Email')),
