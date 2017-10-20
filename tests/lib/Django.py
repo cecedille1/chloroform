@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import shutil
+import sys
 import os
 
 from robot.api import logger
@@ -12,6 +13,10 @@ from django.conf import settings
 from django.apps import apps
 from django.db.models import Q
 from django.db.utils import ProgrammingError
+
+
+if sys.version_info < (3, ):
+    FileNotFoundError = OSError
 
 
 class DjangoListener(object):
