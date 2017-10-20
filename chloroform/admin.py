@@ -113,6 +113,7 @@ class ConfigurationAdmin(BaseModelAdmin):
     ]
     list_display = [
         'name',
+        'target',
     ]
     inlines = [
         RequirementInline,
