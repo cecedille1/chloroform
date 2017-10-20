@@ -1,0 +1,49 @@
+- fields:
+    name: default
+    subject: Subject-original
+    success_message: Succes-original
+    success_message_en: Succes-english
+    success_message_fr: Succes-french
+    target: jbrown@gmail.com
+  model: chloroform.configuration
+  pk: 1
+- fields:
+    description: Description original
+    description_en: Description english
+    description_fr: Description french
+    name: name
+    type: name
+    verbose_name: Verbose name original
+    verbose_name_en: Verbose name english
+    verbose_name_fr: Verbose name french
+  model: chloroform.metadata
+  pk: 1
+- fields:
+    description: description-alt-original
+    name: alt
+    type: alternative
+    verbose_name: Alternative label original
+    verbose_name_en: Alternative label english
+  model: chloroform.metadata
+  pk: 5
+- fields:
+    label: label5 original
+    label_en: label5 english
+    metadata: 5
+    order: 0
+    value: label5-value
+  model: chloroform.alternative
+  pk: 5
+- fields:
+    label: label6 original
+    metadata: 5
+    order: 0
+    value: label6-value
+  model: chloroform.alternative
+  pk: 6
+- fields: {configuration: 1, metadata: 1, required: true}
+  model: chloroform.requirement
+  pk: 14
+- fields: {configuration: 1, metadata: 5, required: true}
+  model: chloroform.requirement
+  pk: 18

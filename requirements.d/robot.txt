@@ -1,0 +1,4 @@
+robotframework
+git+https://github.com/bulkan/robotframework-requests.git
+pyyaml
+django-modeltranslation
