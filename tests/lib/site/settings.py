@@ -18,9 +18,13 @@ PASSWORD_HASHERS = [
 
 ALLOWED_HOSTS = ['*']
 INSTALLED_APPS = [
+    'modeltranslation',
+    'django.contrib.sessions',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.admin',
     'crispy_forms',
     'chloroform',
-    'modeltranslation',
 ]
 
 
@@ -30,14 +34,27 @@ TEMPLATES = [
         'DIRS': [
             os.path.join(os.path.dirname(__file__), 'templates'),
         ],
+        'OPTIONS': {
+            'context_processors': [
+                'django.contrib.auth.context_processors.auth'
+            ]
+        },
         'APP_DIRS': True,
     },
 ]
 MIDDLEWARE_CLASSES = [
+    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
 ]
 MIDDLEWARE = [
+    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
 ]
 
 DATABASES = {

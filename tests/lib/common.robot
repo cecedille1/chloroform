@@ -40,3 +40,9 @@ Should be JSON Equal
     [arguments]         ${actual}       ${expected}
     ${expected}=        Evaluate        json.loads('''${expected}''')     json
     Should be Equal     ${actual}       ${expected}
+
+Initialize Session Lang
+    [arguments]     ${session_name}     ${lang}
+    &{headers}=     Create Dictionary   accept-language=${lang}
+    Create Session      ${session_name}             ${BASEURL}  headers=&{headers}
+    Set Test Variable   ${session}                  ${session_name}
