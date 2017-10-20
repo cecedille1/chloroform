@@ -15,9 +15,9 @@ def should_match_expectation(actual, expected):
             assert act.startswith(exp[:any_position]), '%s.startswith(%s)' % (act, exp[:any_position])
             assert act.endswith(exp[any_position + 3:]), '%s.endswith(%s)' % (act, exp[any_position + 3:])
 
-    remain_actual =list(actual)
+    remain_actual = list(actual)
     assert not remain_actual
-    remain_expected =list(expected)
+    remain_expected = list(expected)
     assert not remain_expected
 
 

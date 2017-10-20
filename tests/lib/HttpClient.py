@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import json
-
 from robot.libraries.BuiltIn import BuiltIn
 from robot.api import logger
 
