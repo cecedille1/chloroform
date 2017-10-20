@@ -49,8 +49,8 @@ def run_tests(python_version, django) {
     if (python_version == '2') {
         pip('install', "-r ${workspace}/requirements.d/tests-python2.txt", venv_path);
     }
-    run('pytest',  "--junitxml=${workspace}/${test_name}.unit.xml", venv_path);
-    run('robot',  "--pythonpath=${workspace}/tests/ --output=${workspace}/output.${test_name}.xml  --xunit=${workspace}/${test_name}.functional.xml tests/*.robot", venv_path);
+    run('pytest',  "--junitxml=${workspace}/unit-${test_name}.tests.xml", venv_path);
+    run('robot',  "--pythonpath=${workspace}/tests/ --output=${workspace}/output-${test_name}.xml  --xunit=${workspace}/functional-${test_name}.tests.xml tests/*.robot", venv_path);
 }
 def run(prog, command, env=default_env) {
     sh("${env}/bin/${prog} ${command}");
@@ -139,7 +139,7 @@ node {
                     } finally {
                         step([
                                 $class: 'JUnitResultArchiver',
-                                testResults: "*.(unit|functional).xml",
+                                testResults: "*.tests.xml",
                         ]);
                     }
                 }
