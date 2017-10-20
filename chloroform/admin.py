@@ -23,10 +23,13 @@ except ImportError:
 
 
 if 'modeltranslation' in settings.INSTALLED_APPS:
+    from modeltranslation.forms import TranslationModelForm
     from modeltranslation.admin import TranslationAdmin, TranslationTabularInline
+    BaseModelForm = TranslationModelForm
     BaseModelAdmin = TranslationAdmin
     BaseTabularInline = TranslationTabularInline
 else:
+    BaseModelForm = forms.ModelForm
     BaseModelAdmin = admin.ModelAdmin
     BaseTabularInline = admin.TabularInline
 
@@ -84,7 +87,7 @@ class RequirementInline(admin.TabularInline):
     ]
 
 
-class ConfigurationForm(forms.ModelForm):
+class ConfigurationForm(BaseModelForm):
     if HTMLFormField:
         success_message = Configuration._meta.get_field('success_message').formfield(
             widget=None,
