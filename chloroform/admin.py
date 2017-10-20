@@ -22,7 +22,16 @@ except ImportError:
     HTMLFormField = None
 
 
-class AlternativeInline(admin.TabularInline):
+if 'modeltranslation' in settings.INSTALLED_APPS:
+    from modeltranslation.admin import TranslationAdmin, TranslationTabularInline
+    BaseModelAdmin = TranslationAdmin
+    BaseTabularInline = TranslationTabularInline
+else:
+    BaseModelAdmin = admin.ModelAdmin
+    BaseTabularInline = admin.TabularInline
+
+
+class AlternativeInline(BaseTabularInline):
     model = Alternative
     fields = [
         'label',
@@ -39,7 +48,7 @@ if 'adminsortable2' in settings.INSTALLED_APPS:
 
 
 @admin.register(Metadata)
-class MetadataAdmin(admin.ModelAdmin):
+class MetadataAdmin(BaseModelAdmin):
     list_display = [
         'verbose_name',
         'name',
@@ -101,7 +110,7 @@ class ConfigurationForm(forms.ModelForm):
 
 
 @admin.register(Configuration)
-class ConfigurationAdmin(admin.ModelAdmin):
+class ConfigurationAdmin(BaseModelAdmin):
     form = ConfigurationForm
     list_display = [
         'name',
