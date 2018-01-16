@@ -77,3 +77,14 @@ def test_form_built(fb, configuration):
         'nom': 'Capulet',
         'prenom': 'Julliet',
     }
+
+
+@pytest.mark.usefixtures('db')
+def test_form_built(fb):
+    form_class = fb.get_form()
+    assert list(form_class().fields) == [
+        'email',
+        'message',
+        'prenom',
+        'nom',
+    ]

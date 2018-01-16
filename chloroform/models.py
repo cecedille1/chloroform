@@ -146,10 +146,16 @@ class Requirement(models.Model):
     required = models.BooleanField(
         default=False,
     )
+    order = models.PositiveIntegerField(
+        default=0,
+    )
 
     class Meta:
         unique_together = [
             ('metadata', 'configuration'),
+        ]
+        ordering = [
+            'order',
         ]
 
     def __str__(self):

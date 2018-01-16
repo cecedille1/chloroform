@@ -48,8 +48,15 @@ class ContactFormBuilder(object):
         return self.configuration.requirements.select_related('metadata')
 
     def get_form(self):
-        fields = {}
+        fields = list(BaseForm.Meta.fields)
+
+        attrs = {}
         for req in self.requirements:
-            fields[req.metadata.name] = req.get_field()
+            fields.append(req.metadata.name)
+            attrs[req.metadata.name] = req.get_field()
+
+        attrs['Meta'] = type('Meta', (BaseForm.Meta, ), {
+            'fields': fields
+        })
         metacls = type(BaseForm)
-        return metacls('ContactForm', (BaseForm, ), fields)
+        return metacls('ContactForm', (BaseForm, ), attrs)

@@ -40,10 +40,21 @@ class AlternativeInline(BaseTabularInline):
     ]
 
 
+class RequirementInline(admin.TabularInline):
+    model = Requirement
+    fields = [
+        'metadata',
+        'required',
+    ]
+
+
 if 'adminsortable2' in settings.INSTALLED_APPS:
     from adminsortable2.admin import SortableInlineAdminMixin
     AlternativeInline = type(AlternativeInline)('AlternativeInline',
                                                 (SortableInlineAdminMixin, AlternativeInline),
+                                                {})
+    RequirementInline = type(RequirementInline)('RequirementInline',
+                                                (SortableInlineAdminMixin, RequirementInline),
                                                 {})
 
 
@@ -74,14 +85,6 @@ class MetadataAdmin(BaseModelAdmin):
 
     def type_display(self, metadata):
         return metadata.get_type_display()
-
-
-class RequirementInline(admin.TabularInline):
-    model = Requirement
-    fields = [
-        'metadata',
-        'required',
-    ]
 
 
 class ConfigurationForm(forms.ModelForm):
