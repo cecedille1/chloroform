@@ -84,6 +84,9 @@ def test_form_built_name(fb, configuration):
     form_class = fb.get_form()
     assert form_class.Meta.configuration == configuration
 
+    form = form_class()
+    assert form.Meta.configuration == configuration
+
 
 @pytest.mark.usefixtures('db')
 def test_form_built_order(fb):

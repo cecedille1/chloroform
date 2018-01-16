@@ -19,7 +19,7 @@ Installation
 
 Install the app
 
-    pip install -i https://pi.emencia.net/- chloroform
+    pip install -i https://pi.emencia.net/jenkins/release chloroform
 
 Add `chloroform` to the `INSTALLED_APPS` and include `chloroform.urls`. Create
 a `default` configuration, and add some metadata.
@@ -37,11 +37,52 @@ Chloroform will use these settings:
 Usage
 -----
 
-Chloroform can be called by the views `chloroform` and `default-chloroform` and
-the template tag `{% chloroform %}`.
+Chloroform can be called by the views named `chloroform` and
+`default-chloroform` and the template tag `{% chloroform %}`.
 
 Optional features
 -----------------
 
-* adminsortable2 is used if it's in the `INSTALLED_APPS`
-* captcha
+* Models may be sorted by adminsortable2 if it's in the `INSTALLED_APPS`
+* captcha if it's in `INSTALLED_APPS`
+* Model Translation through django-modeltranslation if its installed, for
+  models `Configuration`, `Metadata` and `Alternative`
+* `ckeditor` for `success_message`
+* Export from the admin if `import_export` is in installed apps
+
+Changing helpers
+----------------
+
+Chloroform uses Crispy form helpers. There is a default form helper generated
+from the form. It's customizable by using the setting ``CHLOROFORM_HELPERS_MODULE``.
+
+    CHLOROFORM_HELPERS_MODULE = 'project.chloroform_helpers'
+
+This module may define ``ChloroformHelper`` or ``ChloroformTagHelper`` being
+used respectively for the view and the template tag. Those have to be
+``FormHelper`` subclasses. They take the form for which the form helper is
+generated as constructor argument. If this form is passed to the parent
+constructor, the defined layout is discarded and one is generated from the form.
+
+    class ChloroformHelper(FormHelper):
+        layout = Layout( ... )
+        def __init__(self, form):
+            # Discard the form in order to avoid layout to be overwritten
+            super().__init__(None)
+
+The form Meta contains the ``Configuration`` instance for which it is generated.
+
+    class ChloroformHelper(FormHelper):
+        layout = Layout( ... )
+        def __init__(self, form):
+            if form.Meta.configuration.name == 'default':
+                # Use the layout for default configuration,
+                # let crispy generate a new one for other configurations
+                form = None
+            super().__init__(form)
+
+The property `form_action` is not required as it will always be overwritten by
+the view.
+
+The order of fields depends on the order defined in the model. Extra fields
+will throw an ``ImproperlyConfigured`` exception as will missing required fields.
