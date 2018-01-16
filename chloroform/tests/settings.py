@@ -33,6 +33,6 @@ DATABASES = {
 CHLOROFORM_DOMAIN = 'https://chloroform.emencia.io'
 CHLOROFORM_TARGET_EMAILS = ['admin@chloro.form']
 ROOT_URLCONF = 'chloroform.urls'
-CRISPY_FAIL_SILENTLY= False
+CRISPY_FAIL_SILENTLY = False
 
 USE_TZ = True
