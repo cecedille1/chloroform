@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from django.core.exceptions import ImproperlyConfigured
 from django.views.generic import FormView
 from django.views.generic.detail import SingleObjectMixin, DetailView
 from django.core.urlresolvers import reverse
@@ -38,6 +39,18 @@ class ChloroformView(SingleObjectMixin, FormHelperMixin, FormView):
         else:
             helper.form_action = reverse('chloroform', args=[self.object.name])
 
+        all_fields = set(form.fields)
+        required_fields = {name for name, f in form.fields.items() if f.required}
+        declared_fields = {name for pos, name in helper.layout.get_field_names()}
+
+        if not required_fields.issubset(declared_fields):
+            raise ImproperlyConfigured(_('Not all required fields are declared in the form helper: {}').format(
+                required_fields.difference(declared_fields),
+            ))
+        if not declared_fields.issubset(all_fields):
+            raise ImproperlyConfigured(_('There are extra fields in the form helper: {}').format(
+                ', '.join(declared_fields.difference(all_fields)),
+            ))
         return helper
 
     def get_object(self):

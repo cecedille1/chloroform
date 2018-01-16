@@ -2,6 +2,7 @@
 
 import pytest
 
+from django.core.exceptions import ImproperlyConfigured
 from django.core.management import call_command
 from django.conf.urls import include, url
 
@@ -57,6 +58,40 @@ def test_chloroform_view(chloro_view):
     assert resp.status_code == 200
     assert set(resp.context_data['form'].fields) == {'email', 'message', 'prenom', 'nom'}
     assert b'mark01' in resp.render().content
+
+    from chloroform.helpers import ChloroformHelper
+    assert isinstance(resp.context_data['form_helper'], ChloroformHelper)
+
+
+@pytest.mark.django_db
+def test_chloroform_view_helper(chloro_view, settings):
+    settings.CHLOROFORM_HELPERS_MODULE = 'chloroform.tests.helpers'
+
+    call_command('loaddata', 'chloroform/tests/test_views.yaml')
+
+    resp = chloro_view()
+    from chloroform.tests.helpers import ChloroformHelper
+    assert isinstance(resp.context_data['form_helper'], ChloroformHelper)
+
+
+@pytest.mark.django_db
+def test_chloroform_view_helper_missing(chloro_view, settings):
+    settings.CHLOROFORM_HELPERS_MODULE = 'chloroform.tests.helpers_missing'
+
+    call_command('loaddata', 'chloroform/tests/test_views.yaml')
+
+    with pytest.raises(ImproperlyConfigured):
+        chloro_view()
+
+
+@pytest.mark.django_db
+def test_chloroform_view_helper_extra(chloro_view, settings):
+    settings.CHLOROFORM_HELPERS_MODULE = 'chloroform.tests.helpers_extra'
+
+    call_command('loaddata', 'chloroform/tests/test_views.yaml')
+
+    with pytest.raises(ImproperlyConfigured):
+        chloro_view()
 
 
 @pytest.mark.django_db
