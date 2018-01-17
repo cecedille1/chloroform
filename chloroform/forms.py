@@ -55,7 +55,7 @@ class ContactFormBuilder(object):
             fields.append(req.metadata.name)
             attrs[req.metadata.name] = req.get_field()
 
-        attrs['Meta'] = type('Meta', (BaseForm.Meta, ), {
+        attrs['Meta'] = type('Meta', (BaseForm.Meta, object), {
             'fields': fields,
             'configuration': self.configuration,
         })
