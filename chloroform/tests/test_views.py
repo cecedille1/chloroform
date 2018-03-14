@@ -113,7 +113,6 @@ def test_chloroform_view_alternative(chloro_view):
 
 
 @pytest.mark.django_db
-@pytest.mark.urls('chloroform.tests.test_views')
 def test_chloroform_fill_alternative(fill_view):
     call_command('loaddata', 'chloroform/tests/test_views.yaml')
     resp = fill_view(configuration='alternative')
@@ -128,7 +127,6 @@ def test_chloroform_fill_alternative(fill_view):
 
 
 @pytest.mark.django_db
-@pytest.mark.urls('chloroform.tests.test_views')
 def test_chloroform_fill_none(fill_view):
     resp = fill_view()
 
@@ -142,7 +140,6 @@ def test_chloroform_fill_none(fill_view):
 
 
 @pytest.mark.django_db
-@pytest.mark.urls('chloroform.tests.test_views')
 def test_chloroform_fill(fill_view):
     call_command('loaddata', 'chloroform/tests/test_views.yaml')
     resp = fill_view({

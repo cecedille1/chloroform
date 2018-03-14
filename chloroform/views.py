@@ -3,8 +3,11 @@
 from django.core.exceptions import ImproperlyConfigured
 from django.views.generic import FormView
 from django.views.generic.detail import SingleObjectMixin, DetailView
-from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
+try:
+    from django.urls import reverse
+except ImportError:
+    from django.core.urlresolvers import reverse
 
 try:
     from django.db.transaction import on_commit

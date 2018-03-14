@@ -110,6 +110,7 @@ class Alternative(models.Model):
     metadata = models.ForeignKey(
         Metadata,
         related_name='alternatives',
+        on_delete=models.CASCADE,
     )
     label = models.CharField(
         max_length=1000,
@@ -138,10 +139,12 @@ class Alternative(models.Model):
 class Requirement(models.Model):
     metadata = models.ForeignKey(
         Metadata,
+        on_delete=models.CASCADE,
     )
     configuration = models.ForeignKey(
         Configuration,
         related_name='requirements',
+        on_delete=models.CASCADE,
     )
     required = models.BooleanField(
         default=False,
@@ -172,6 +175,7 @@ class Requirement(models.Model):
 class Contact(models.Model):
     configuration = models.ForeignKey(
         Configuration,
+        on_delete=models.PROTECT,
     )
     creation_date = models.DateTimeField(
         _('Creation date'),
@@ -197,6 +201,7 @@ class ContactMetadata(models.Model):
     contact = models.ForeignKey(
         Contact,
         related_name='metadatas',
+        on_delete=models.CASCADE,
     )
     name = models.CharField(
         max_length=255,

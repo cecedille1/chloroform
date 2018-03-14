@@ -5,6 +5,7 @@ from django.template.loader import select_template
 from django.template import Template, Context
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
+from django.utils.encoding import force_text
 
 
 class ChloroformMailBuilder(object):
@@ -14,7 +15,7 @@ class ChloroformMailBuilder(object):
     def __init__(self, configuration, domain=None, request=None):
         self.configuration = configuration
         self.to_email_addresses = configuration.get_targets()
-        self.subject_template = Template(configuration.subject)
+        self.subject_template = Template(force_text(configuration.subject))
 
         body_template = 'chloroform/mails/notification_{}.txt'.format(configuration.name)
         self.body_template = select_template([body_template, self.__class__.body_template])

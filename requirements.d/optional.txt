@@ -1,1 +1,1 @@
-django-import-export
+django-import-export>=1.0.0
