@@ -1,5 +1,3 @@
--r ../requirements.txt
--r ./tests.txt
 setuptools>=34
 flake8
 wheel
