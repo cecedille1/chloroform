@@ -44,37 +44,16 @@ def run_tests(python_version, django) {
     def test_name = "python${python_version}-django${django_major}.${django_minor}";
     def venv_path = "${workspace}/.envs/${test_name}";
 
-    pip('install', "'django>=${django_major}.${django_minor},<${django_major}.${django_minor_next}'", venv_path);
-    venv("-r ${workspace}/requirements.txt -r ${workspace}/requirements.d/robot.txt -r ${workspace}/requirements.d/tests.txt",  venv_path, python_version);
-    if (python_version == '2') {
-        pip('install', "-r ${workspace}/requirements.d/tests-python2.txt", venv_path);
-    }
-    run('pytest',  "--junitxml=${workspace}/unit-${test_name}.tests.xml", venv_path);
-    run('robot',  "--pythonpath=${workspace}/tests/ --output=${workspace}/output-${test_name}.xml  --xunit=${workspace}/functional-${test_name}.tests.xml tests/*.robot", venv_path);
-}
-def run(prog, command, env=default_env) {
-    sh("${env}/bin/${prog} ${command}");
-};
-
-def pip(prog, command, env=default_env) {
-    if (prog == 'install' && index_url) {
-        command = "-i ${index_url} ${command}";
-    }
-    command = "${prog} ${command}";
-    run('pip', command, env)
-};
-def setuppy(command, env=default_env) {
-    run('python', "setup.py ${command}", env)
-}
-
-def venv(requirements, env=default_env, version=3) {
-    if (!fileExists("${env}/bin/python")) {
+    if (!fileExists("${venv_path}/bin/python")) {
         sh("virtualenv --python python${version} ${env}");
     }
-    if (requirements) {
-        pip('install', requirements, env);
+    sh("${venv_path}/bin/pip install 'django>=${django_major}.${django_minor},<${django_major}.${django_minor_next}'");
+    sh("${venv_path}/bin/pip install -r ${workspace}/requirements.txt -r ${workspace}/requirements.d/robot.txt -r ${workspace}/requirements.d/tests.txt");
+    if (python_version == '2') {
+        sh("${venv_path}/bin/pip install -r ${workspace}/requirements.d/tests-python2.txt");
     }
-    return env;
+    sh("${venv_path}/bin/pytest --junitxml=${workspace}/unit-${test_name}.tests.xml");
+    sh("${venv_path}/bin/robot --pythonpath=${workspace}/tests/ --output=${workspace}/output-${test_name}.xml  --xunit=${workspace}/functional-${test_name}.tests.xml tests/*.robot");
 }
 
 def notify(text) {
@@ -89,87 +68,89 @@ node {
     workspace = pwd();
     default_env = "${workspace}/.envs/default";
 
-    withEnv(['LC_ALL=en_US.utf-8']) {
-        stage 'Checkout', {
-            get_code()
+    stage 'Checkout', {
+        get_code()
+    }
+    gitlabBuilds(builds: [
+            'Quality & tests setup',
+            'Quality',
+            'Tests',
+            'Build',
+    ]) {
+        stage 'Quality & tests setup', {
+            gitlabCommitStatus('Quality & tests setup') {
+                if (!fileExists("${venv_path}/bin/python")) {
+                    sh("virtualenv --python python3 ${default_env}");
+                }
+                sh("${default_env}/bin/pip install -r requirements.d/jenkins.txt");
+            }
         }
+        stage 'Quality', {
+            gitlabCommitStatus('Quality') {
+                writeFile(file: './flake8.log', text: '');
+                try {
+                    run('flake8', "--output-file=${workspace}/flake8.log");
+                } finally {
+                    step([
+                            $class: 'WarningsPublisher',
+                            defaultEncoding: 'UTF-8',
+                            healthy: '20',
+                            unHealthy: '100',
+                            parserConfigurations: [[
+                            parserName: 'Pep8',
+                            pattern: "flake8.log"
+                            ]]
+                    ]);
+                }
+            }
+        }
+        stage 'Tests', {
+            gitlabCommitStatus('Tests') {
+                try {
+                    parallel(
+                            test_python2_django18: {run_tests('2', [1, 8])},
+                            test_python2_django19: {run_tests('2', [1, 9])},
+                            test_python2_django110: {run_tests('2', [1, 10])},
+                            test_python2_django111: {run_tests('2', [1, 11])},
+
+                            test_python3_django18: {run_tests('3', [1, 8])},
+                            test_python3_django19: {run_tests('3', [1, 9])},
+                            test_python3_django110: {run_tests('3', [1, 10])},
+                            test_python3_django111: {run_tests('3', [1, 11])},
+                            test_python3_django20: {run_tests('3', [2, 0])},
+                            );
+                } finally {
+                    step([
+                            $class: 'JUnitResultArchiver',
+                            testResults: "*.tests.xml",
+                    ]);
+                }
+            }
+        }
+        stage 'Build', {
+            gitlabCommitStatus('Build') {
+                def files = findFiles(glob: 'chloroform/locale/**/*.po');
+                files.each({
+                    echo("Building language file ${it.path}");
+                    echo(it.path.replaceAll('.po', '.mo'));
+                    echo("msgfmt --check ${it.path} -o ${it.path.replaceAll('.po', '.mo')}");
+                });
+            }
+        }
+        notify("Seems pretty good ${env.BUILD_URL}");
+    }
+
+    if (env.gitlabSourceBranch == DEPLOYED_BRANCH && env.gitlabActionType == 'PUSH' || env.gitlabSourceBranch == null) {
         gitlabBuilds(builds: [
-                'Quality & tests setup',
-                'Quality',
-                'Tests',
-                'Build',
+                'Publish',
         ]) {
-            stage 'Quality & tests setup', {
-                gitlabCommitStatus('Quality & tests setup') {
-                    venv('-r requirements.d/jenkins.txt');
-                }
-            }
-            stage 'Quality', {
-                gitlabCommitStatus('Quality') {
-                    writeFile(file: './flake8.log', text: '');
-                    try {
-                        run('flake8', "--output-file=${workspace}/flake8.log");
-                    } finally {
-                        step([
-                                $class: 'WarningsPublisher',
-                                defaultEncoding: 'UTF-8',
-                                healthy: '20',
-                                unHealthy: '100',
-                                parserConfigurations: [[
-                                parserName: 'Pep8',
-                                pattern: "flake8.log"
-                                ]]
-                        ]);
-                    }
-                }
-            }
-            stage 'Tests', {
-                gitlabCommitStatus('Tests') {
-                    try {
-                        parallel(
-                                test_python2_django18: {run_tests('2', [1, 8])},
-                                test_python2_django19: {run_tests('2', [1, 9])},
-                                test_python2_django110: {run_tests('2', [1, 10])},
-                                test_python2_django111: {run_tests('2', [1, 11])},
-
-                                test_python3_django18: {run_tests('3', [1, 8])},
-                                test_python3_django19: {run_tests('3', [1, 9])},
-                                test_python3_django110: {run_tests('3', [1, 10])},
-                                test_python3_django111: {run_tests('3', [1, 11])},
-                                test_python3_django20: {run_tests('3', [2, 0])},
-                                );
-                    } finally {
-                        step([
-                                $class: 'JUnitResultArchiver',
-                                testResults: "*.tests.xml",
-                        ]);
-                    }
-                }
-            }
-            stage 'Build', {
-                gitlabCommitStatus('Build') {
-                    def files = findFiles(glob: 'chloroform/locale/**/*.po');
-                    files.each({
-                        echo("Building language file ${it.path}");
-                        echo(it.path.replaceAll('.po', '.mo'));
-                        echo("msgfmt --check ${it.path} -o ${it.path.replaceAll('.po', '.mo')}");
-                    });
-                }
-            }
-            notify("Seems pretty good ${env.BUILD_URL}");
-        }
-
-        if (env.gitlabSourceBranch == DEPLOYED_BRANCH && env.gitlabActionType == 'PUSH' || env.gitlabSourceBranch == null) {
-            gitlabBuilds(builds: [
-                    'Publish',
-            ]) {
-                stage 'Publish', {
-                    gitlabCommitStatus('Publish') {
-                        setuppy("register -r ${index}");
-                        setuppy("sdist bdist_wheel upload -r ${index}");
-                    }
+            stage 'Publish', {
+                gitlabCommitStatus('Publish') {
+                    sh("python setup.py register -r ${index}");
+                    sh("python setup.py sdist bdist_wheel upload -r ${index}");
                 }
             }
         }
     }
+}
 }
