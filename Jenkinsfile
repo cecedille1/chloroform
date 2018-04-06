@@ -79,7 +79,7 @@ node {
     ]) {
         stage 'Quality & tests setup', {
             gitlabCommitStatus('Quality & tests setup') {
-                if (!fileExists("${venv_path}/bin/python")) {
+                if (!fileExists("${default_env}/bin/python")) {
                     sh("virtualenv --python python3 ${default_env}");
                 }
                 sh("${default_env}/bin/pip install -r requirements.d/jenkins.txt");
