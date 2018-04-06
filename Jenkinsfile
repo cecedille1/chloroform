@@ -117,7 +117,7 @@ node {
                             test_python3_django19: {run_tests('3', [1, 9])},
                             test_python3_django110: {run_tests('3', [1, 10])},
                             test_python3_django111: {run_tests('3', [1, 11])},
-                            test_python3_django20: {run_tests('3', [2, 0])},
+                            // test_python3_django20: {run_tests('3', [2, 0])},
                             );
                 } finally {
                     step([
