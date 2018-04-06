@@ -107,7 +107,8 @@ class Django(object):
                     if e.errno != 17:
                         raise
         call_command('migrate')
-        call_command('sync_translation_fields', interactive=False)
+        if 'modeltranslation' in settings.INSTALLED_APPS:
+            call_command('sync_translation_fields', interactive=False)
 
     def teardown_database(self):
         from django.db import connection
