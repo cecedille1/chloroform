@@ -88,7 +88,7 @@ class ChloroformView(SingleObjectMixin, FormHelperMixin, FormView):
         return reverse('chloroform-success', args=[self.object.name])
 
     def send_email(self, contact):
-        cmb = ChloroformMailBuilder(self.object)
+        cmb = ChloroformMailBuilder(self.object, request=self.request)
         email = cmb.get_email(contact)
 
         @on_commit
