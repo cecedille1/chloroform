@@ -50,6 +50,16 @@ Optional features
 * `ckeditor` for `success_message`
 * Export from the admin if `import_export` is in installed apps
 
+
+Changing the default fields
+---------------------------
+
+Chloroform will use in all forms a field named message and a field named email.
+They are used internally by chloroform and cannot be removed. They can be
+renamed and customized by creating a metadata named respectively `message` and
+`email` and adding them to the configuration.
+
+
 Changing helpers
 ----------------
 
