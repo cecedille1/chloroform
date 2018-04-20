@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+import collections
+
 from django import forms
 from django.db import transaction
 from django.conf import settings
@@ -48,12 +50,13 @@ class ContactFormBuilder(object):
         return self.configuration.requirements.select_related('metadata')
 
     def get_form(self):
-        fields = list(BaseForm.Meta.fields)
-
-        attrs = {}
-        for req in self.requirements:
-            fields.append(req.metadata.name)
+        attrs = collections.OrderedDict()
+        for req in reversed(self.requirements):
             attrs[req.metadata.name] = req.get_field()
+
+        fields = list(attrs)
+        fields.extend(f for f in reversed(BaseForm.Meta.fields) if f not in attrs)
+        fields.reverse()
 
         attrs['Meta'] = type('Meta', (BaseForm.Meta, object), {
             'fields': fields,

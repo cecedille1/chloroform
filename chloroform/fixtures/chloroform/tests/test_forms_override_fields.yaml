@@ -1,0 +1,45 @@
+- model: chloroform.Configuration
+  pk: 1
+  fields:
+      name: default
+- model: chloroform.Metadata
+  pk: 1
+  fields:
+      name: email
+      verbose_name: email name override
+      type: name
+- model: chloroform.Metadata
+  pk: 2
+  fields:
+      name: message
+      verbose_name: message name override
+      type: text
+      description: mark02
+- model: chloroform.Metadata
+  pk: 3
+  fields:
+      name: address
+      verbose_name: additional field
+      type: address
+      description: mark02
+- model: chloroform.Requirement
+  pk: 1
+  fields:
+      configuration: 1
+      metadata: 1
+      required: true
+      order: 3
+- model: chloroform.Requirement
+  pk: 2
+  fields:
+      configuration: 1
+      metadata: 2
+      required: true
+      order: 1
+- model: chloroform.Requirement
+  pk: 3
+  fields:
+      configuration: 1
+      metadata: 3
+      required: true
+      order: 2
