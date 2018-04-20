@@ -45,6 +45,7 @@ class RequirementInline(admin.TabularInline):
     fields = [
         'metadata',
         'required',
+        'order',
     ]
 
 
