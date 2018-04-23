@@ -31,13 +31,15 @@ class BaseForm(forms.ModelForm):
     @transaction.atomic
     def save(self):
         contact = super(BaseForm, self).save()
-        for f in BaseForm.Meta.fields:
-            # Remove declared fields on the base model
-            self.cleaned_data.pop(f, None)
-        for k, v in self.cleaned_data.items():
-            ContactMetadata.objects.create(contact=contact,
-                                           name=k,
-                                           value=v)
+        # Remove declared fields on the base model
+        base_fields = frozenset(BaseForm.Meta.fields)
+        ContactMetadata.objects.bulk_create([ContactMetadata(
+            contact=contact,
+            name=k,
+            value=v
+        ) for k, v in self.cleaned_data.items()
+            if k not in base_fields
+        ])
         return contact
 
 
