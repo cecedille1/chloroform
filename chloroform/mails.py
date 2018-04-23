@@ -40,6 +40,7 @@ class ChloroformMailBuilder(object):
             'metadata': {
                 name: value
                 for name, value in contact.metadatas.values_list('name', 'value')
+                if name not in {'email', 'message'}
             },
         }
 
