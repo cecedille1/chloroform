@@ -2,4 +2,5 @@ pytest
 pytest-django>=3.1.2
 pyyaml
 pytest-pythonpath
+factory-boy
 -r ./optional.txt
