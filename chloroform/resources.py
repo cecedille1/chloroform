@@ -20,7 +20,22 @@ class ContactResource(resources.ModelResource):
             'email',
         ]
 
+    def get_field_name(self, field):
+        """
+        Returns the field name for a given field.
+        """
+        #  Copied from django import export source, transformed to an instance method
+        for field_name, f in self.fields.items():
+            if f == field:
+                return field_name
+        raise AttributeError("Field %s does not exists in %s resource" % (field, type(self)))
+
+    def __init__(self, *args, **kw):
+        super(ContactResource, self).__init__(*args, **kw)
+        self.fields = self.__class__.fields.copy()
+
     def before_export(self, queryset, *args, **kw):
+        queryset = queryset or self.get_queryset()
         meta_data = Metadata.objects.filter(
             requirement__configuration__in=queryset.values('configuration'),
         )
